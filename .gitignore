@@ -1,0 +1,6 @@
+src/handler/tmp
+.DS_Store
+.env
+src/.serverless
+src/bin/main
+.production.env

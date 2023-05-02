@@ -1,0 +1,31 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      target: develop
+    tty: true
+    env_file:
+      - .env
+    container_name: go
+    working_dir: /go/src
+    volumes:
+      - ./src:/go/src
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0.27
+    platform: linux/amd64
+    container_name: db
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  db:

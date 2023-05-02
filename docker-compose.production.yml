@@ -1,0 +1,19 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      target: production
+    tty: true
+    container_name: go_prod
+    env_file:
+      - .production.env
+    working_dir: /go/src
+    volumes:
+      - .:/go
+      - exclued:/go/pkg
+    ports:
+      - "3000:3000"
+
+volumes:
+  exclued:

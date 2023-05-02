@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Test...
+      - docker-compose -f docker-compose.production.yml run --rm app go test -v
+  build:
+    commands:
+      - echo build go...
+      - docker-compose -f docker-compose.production.yml run --rm app make build
+      - echo deploy go...
+      - docker-compose -f docker-compose.production.yml run --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --rm app make deploy
