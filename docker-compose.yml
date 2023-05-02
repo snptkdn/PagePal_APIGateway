@@ -7,7 +7,7 @@ services:
     tty: true
     env_file:
       - .env
-    container_name: go
+    container_name: pagepal-go
     working_dir: /go/src
     volumes:
       - ./src:/go/src
@@ -19,7 +19,7 @@ services:
   db:
     image: mysql:8.0.27
     platform: linux/amd64
-    container_name: db
+    container_name: pagepal-db
     env_file:
       - .env
     ports:
