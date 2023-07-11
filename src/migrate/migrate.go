@@ -1,12 +1,13 @@
-package main
+package migrate
 
 import (
 	"page-pal/model"
 	"page-pal/util"
 )
 
-func main() {
+func Migrate() {
   db := util.GetDb()
 
   db.AutoMigrate(&model.User{})
+  db.AutoMigrate(&model.Books{})
 }

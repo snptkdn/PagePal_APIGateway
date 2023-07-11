@@ -22,6 +22,8 @@ func getGin() *gin.Engine {
 	engine.GET("/", controller.IndexHandler)
 	engine.GET("/hello", controller.HelloHandler)
 	engine.POST("/signup", controller.SignUpHandler)
+  engine.POST("/books", controller.BookHandler)
+  engine.POST("/migrate", controller.MigrateHandler)
 
   return engine
 }
