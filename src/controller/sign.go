@@ -76,7 +76,7 @@ func SignInHandler(c *gin.Context) {
   }
 
   if isValid {
-    c.Status(http.StatusOK)
+    c.String(http.StatusOK, fmt.Sprint(service.FindUserID(dto.UserName)))
   } else {
     c.Status(http.StatusBadRequest)
   }

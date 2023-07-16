@@ -14,6 +14,15 @@ func ExistUser(name string) (bool, error) {
 	return count > 0, nil
 }
 
+func FindUserID(name string) uint {
+	db := util.GetDb()
+
+  var user model.User
+	db.Where("name = ?", name).First(&user)
+
+  return user.ID
+}
+
 func IsValidUser(name string, pass string) (bool, error) {
 	db := util.GetDb()
 
