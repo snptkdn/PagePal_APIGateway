@@ -8,7 +8,7 @@ import (
 func ExistUser(name string) (bool, error) {
 	db := util.GetDb()
 
-	var count int
+	var count int64
 	db.Where("name = ?", name).First(&model.User{}).Count(&count)
 
 	return count > 0, nil

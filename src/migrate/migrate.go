@@ -10,4 +10,5 @@ func Migrate() {
 
   db.AutoMigrate(&model.User{})
   db.AutoMigrate(&model.Books{})
+  db.AutoMigrate(&model.ReadHistories{})
 }
