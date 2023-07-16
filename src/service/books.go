@@ -7,16 +7,16 @@ import (
 	"page-pal/util"
 )
 
-func InsertBook(book model.Books) error {
+func InsertBook(book model.Book) error {
 	db := util.GetDb()
 
 	return db.Create(&book).Error
 }
 
-func FindBook(isbn string) (*model.Books, error) {
+func FindBook(isbn string) (*model.Book, error) {
 	db := util.GetDb()
 
-  var tar model.Books
+  var tar model.Book
   res := db.Where("isbn = ?", isbn).First(&tar)
 
   if res.Error != nil {
@@ -26,10 +26,10 @@ func FindBook(isbn string) (*model.Books, error) {
   }
 }
 
-func ExistBook(book model.Books) bool {
+func ExistBook(book model.Book) bool {
 	db := util.GetDb()
 
-	var ex_book model.Books
+	var ex_book model.Book
 	result := db.Where("isbn = ?", book.ISBN).First(&ex_book)
 
 	if result.Error != nil {
@@ -43,12 +43,21 @@ func ExistBook(book model.Books) bool {
 	return true
 }
 
-func IsValidBook(book model.Books) bool {
+func IsValidBook(book model.Book) bool {
 	return (book.PageCount != 0 && book.Title != "" && book.Author != "")
 }
 
-func InsertReadHistory(history model.ReadHistories) error {
+func InsertReadHistory(history model.ReadHistory) error {
 	db := util.GetDb()
 
 	return db.Create(&history).Error
+}
+
+func FindHistory(user_id string) ([]model.ReadHistory, error) {
+	db := util.GetDb()
+
+  var tar []model.ReadHistory
+  db.Preload("Book").Where("user_id = ?", user_id).Find(&tar)
+
+  return tar, nil
 }

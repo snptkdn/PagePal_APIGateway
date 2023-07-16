@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+
 	// "github.com/gin-contrib/sessions"
 	// "github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,7 @@ func BookHandler(c *gin.Context) {
 		return
 	}
 
-	book := model.Books{
+	book := model.Book{
 		ISBN:        dto.ISBN,
 		Title:       dto.Title,
 		Author:      dto.Author,
@@ -67,7 +68,7 @@ func ReadHistoryHandler(c *gin.Context) {
 		return
 	}
 
-	history := model.ReadHistories{
+	history := model.ReadHistory{
 		BookID:   dto.BookID,
 		UserID:   dto.UserID,
 		IsRead: dto.IsRead,
@@ -81,4 +82,21 @@ func ReadHistoryHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, history)
+}
+
+func GetReadHistoryHandler(c *gin.Context) {
+  user_id := c.Query("user_id")
+  
+	histories, err := service.FindHistory(user_id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": fmt.Sprintf("%s: book insert is failed.", err)})
+		c.Abort()
+		return
+	}
+
+  for _, history := range(histories) {
+    fmt.Println(history.Book)
+  }
+
+	c.JSON(http.StatusOK, histories)
 }
