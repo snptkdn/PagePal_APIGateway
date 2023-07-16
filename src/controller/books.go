@@ -39,6 +39,25 @@ func BookHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, book)
 }
 
+func GetBookHandler(c *gin.Context) {
+  isbn := c.Query("isbn")
+  
+	book, err := service.FindBook(isbn)
+	if err != nil {
+    if book == nil {
+      c.Status(http.StatusNotFound)
+      c.Abort()
+      return
+    }
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": fmt.Sprintf("%s: book insert is failed.", err)})
+		c.Abort()
+		return
+	}
+
+	c.JSON(http.StatusOK, book)
+}
+
+
 func ReadHistoryHandler(c *gin.Context) {
 	dto := dto.ReadHistoryRequestDto{}
 

@@ -13,6 +13,19 @@ func InsertBook(book model.Books) error {
 	return db.Create(&book).Error
 }
 
+func FindBook(isbn string) (*model.Books, error) {
+	db := util.GetDb()
+
+  var tar model.Books
+  res := db.Where("isbn = ?", isbn).First(&tar)
+
+  if res.Error != nil {
+    return nil, res.Error
+  } else {
+    return &tar, nil
+  }
+}
+
 func ExistBook(book model.Books) bool {
 	db := util.GetDb()
 
