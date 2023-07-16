@@ -9,5 +9,6 @@ func Migrate() {
   db := util.GetDb()
 
   db.AutoMigrate(&model.User{})
-  db.AutoMigrate(&model.Books{})
+  db.AutoMigrate(&model.Book{})
+  db.AutoMigrate(&model.ReadHistory{})
 }

@@ -8,3 +8,9 @@ type BookRequestDto struct {
   Description string `json:"description"`
   PageCount int `json:"page_count"`
 }
+
+type ReadHistoryRequestDto struct {
+  BookID uint `json:"book_id"`
+  UserID uint `json:"user_id"`
+  IsRead bool `json:"is_read"`
+}

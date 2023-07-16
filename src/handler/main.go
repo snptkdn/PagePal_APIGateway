@@ -47,6 +47,9 @@ func getGin() *gin.Engine {
 	engine.POST("/signup", controller.SignUpHandler)
   engine.POST("/signin", controller.SignInHandler)
   engine.POST("/books", controller.BookHandler)
+	engine.GET("/books", controller.GetBookHandler)
+  engine.POST("/read_histories", controller.ReadHistoryHandler)
+  engine.GET("/read_histories", controller.GetReadHistoryHandler)
   engine.POST("/migrate", controller.MigrateHandler)
 
   return engine
