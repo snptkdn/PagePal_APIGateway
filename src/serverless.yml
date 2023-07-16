@@ -28,3 +28,21 @@ functions:
       - http:
           path: /
           method: get
+      - http:
+          path: signup
+          method: post
+      - http:
+          path: books
+          method: get
+      - http:
+          path: books
+          method: post
+      - http:
+          path: read_histories
+          method: get
+      - http:
+          path: read_histories
+          method: post
+      - http:
+          path: migrate
+          method: post

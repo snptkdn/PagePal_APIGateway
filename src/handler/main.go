@@ -13,15 +13,39 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
+  "github.com/gin-contrib/cors"
 )
 
 var ginLambda *ginadapter.GinLambda
 
 func getGin() *gin.Engine {
 	engine := gin.Default()
+  
+  engine.Use(cors.New(cors.Config{
+    // アクセスを許可したいアクセス元
+    AllowOrigins: []string{
+      os.Getenv("FRONT_HOST"),
+    },
+    AllowMethods: []string{
+        "POST",
+        "GET",
+        "OPTIONS",
+    },
+    AllowHeaders: []string{
+        "Access-Control-Allow-Credentials",
+        "Access-Control-Allow-Headers",
+        "Content-Type",
+        "Content-Length",
+        "Accept-Encoding",
+        "Authorization",
+    },
+    AllowCredentials: true,
+  }))
+  
 	engine.GET("/", controller.IndexHandler)
 	engine.GET("/hello", controller.HelloHandler)
 	engine.POST("/signup", controller.SignUpHandler)
+  engine.POST("/signin", controller.SignInHandler)
   engine.POST("/books", controller.BookHandler)
   engine.POST("/migrate", controller.MigrateHandler)
 
