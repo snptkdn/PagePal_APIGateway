@@ -34,6 +34,7 @@ func getGin() *gin.Engine {
     AllowHeaders: []string{
         "Access-Control-Allow-Credentials",
         "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
         "Content-Type",
         "Content-Length",
         "Accept-Encoding",
@@ -51,6 +52,7 @@ func getGin() *gin.Engine {
   engine.POST("/read_histories", controller.ReadHistoryHandler)
   engine.GET("/read_histories", controller.GetReadHistoryHandler)
   engine.POST("/migrate", controller.MigrateHandler)
+  engine.GET("/users", controller.UsersHandler)
 
   return engine
 }

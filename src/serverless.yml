@@ -46,3 +46,9 @@ functions:
       - http:
           path: migrate
           method: post
+      - http:
+          path: signin
+          method: post
+      - http:
+          path: users
+          method: get
