@@ -57,7 +57,7 @@ func FindHistory(user_id string) ([]model.ReadHistory, error) {
 	db := util.GetDb()
 
   var tar []model.ReadHistory
-  db.Preload("Book").Where("user_id = ?", user_id).Find(&tar)
+  db.Preload("Book").Preload("User").Where("user_id = ?", user_id).Find(&tar)
 
   return tar, nil
 }

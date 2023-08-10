@@ -1,6 +1,8 @@
 package model
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -21,4 +23,6 @@ type ReadHistory struct {
 	UserID uint `gorm:"not null"`
 	User   User `gorm:"foreignKey:UserID"`
 	IsRead bool
+	Rate   int
+	Date   time.Time
 }

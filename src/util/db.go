@@ -10,18 +10,28 @@ import (
 )
 
 func GetDb() *gorm.DB {
-	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?parseTime=True&loc=Local",
-		os.Getenv("MYSQL_USER"),
-		os.Getenv("MYSQL_PASSWORD"),
-		os.Getenv("MYSQL_HOST"),
-		os.Getenv("MYSQL_PORT"),
-		os.Getenv("MYSQL_DATABASE"),
-	)
+  var dsn string
+  if os.Getenv("ENVIRONMENT") == "develop" {
+    dsn = fmt.Sprintf(
+      "%s:%s@tcp(%s)/%s?parseTime=True&loc=Local",
+      os.Getenv("MYSQL_USER"),
+      os.Getenv("MYSQL_PASSWORD"),
+      os.Getenv("MYSQL_HOST"),
+      os.Getenv("MYSQL_DATABASE"),
+    )
+  } else {
+    dsn = fmt.Sprintf(
+      "%s:%s@tcp(%s)/%s?tls=true&parseTime=True&loc=Local",
+      os.Getenv("MYSQL_USER"),
+      os.Getenv("MYSQL_PASSWORD"),
+      os.Getenv("MYSQL_HOST"),
+      os.Getenv("MYSQL_DATABASE"),
+    )
+  }
   
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		// 外部キー制約を有効にする
-		DisableForeignKeyConstraintWhenMigrating: false,
+		// 外部キー制約を無効にする
+		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 
 	if err != nil {

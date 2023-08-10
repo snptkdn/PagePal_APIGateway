@@ -41,15 +41,15 @@ func BookHandler(c *gin.Context) {
 }
 
 func GetBookHandler(c *gin.Context) {
-  isbn := c.Query("isbn")
-  
+	isbn := c.Query("isbn")
+
 	book, err := service.FindBook(isbn)
 	if err != nil {
-    if book == nil {
-      c.Status(http.StatusNotFound)
-      c.Abort()
-      return
-    }
+		if book == nil {
+			c.Status(http.StatusNotFound)
+			c.Abort()
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": fmt.Sprintf("%s: book insert is failed.", err)})
 		c.Abort()
 		return
@@ -57,7 +57,6 @@ func GetBookHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, book)
 }
-
 
 func ReadHistoryHandler(c *gin.Context) {
 	dto := dto.ReadHistoryRequestDto{}
@@ -69,9 +68,11 @@ func ReadHistoryHandler(c *gin.Context) {
 	}
 
 	history := model.ReadHistory{
-		BookID:   dto.BookID,
-		UserID:   dto.UserID,
+		BookID: dto.BookID,
+		UserID: dto.UserID,
 		IsRead: dto.IsRead,
+		Rate:   dto.Rate,
+		Date:   dto.Date,
 	}
 
 	err := service.InsertReadHistory(history)
@@ -85,8 +86,8 @@ func ReadHistoryHandler(c *gin.Context) {
 }
 
 func GetReadHistoryHandler(c *gin.Context) {
-  user_id := c.Query("user_id")
-  
+	user_id := c.Query("user_id")
+
 	histories, err := service.FindHistory(user_id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": fmt.Sprintf("%s: book insert is failed.", err)})
@@ -94,9 +95,9 @@ func GetReadHistoryHandler(c *gin.Context) {
 		return
 	}
 
-  for _, history := range(histories) {
-    fmt.Println(history.Book)
-  }
+	for _, history := range histories {
+		fmt.Println(history.Book)
+	}
 
 	c.JSON(http.StatusOK, histories)
 }
