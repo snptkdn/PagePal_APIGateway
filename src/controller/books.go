@@ -21,7 +21,7 @@ func BookHandler(c *gin.Context) {
 		return
 	}
 
-	book := model.Book{
+	book := &model.Book{
 		ISBN:        dto.ISBN,
 		Title:       dto.Title,
 		Author:      dto.Author,
@@ -30,8 +30,20 @@ func BookHandler(c *gin.Context) {
 		PageCount:   dto.PageCount,
 	}
 
-	err := service.InsertBook(book)
+	err := service.InsertBook(*book)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": fmt.Sprintf("%s: book insert is failed.", err)})
+		c.Abort()
+		return
+	}
+  
+	book, err = service.FindBook(book.ISBN)
+	if err != nil {
+		if book == nil {
+			c.Status(http.StatusNotFound)
+			c.Abort()
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": fmt.Sprintf("%s: book insert is failed.", err)})
 		c.Abort()
 		return
