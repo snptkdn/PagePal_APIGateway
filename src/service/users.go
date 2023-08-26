@@ -6,6 +6,22 @@ import (
 	"page-pal/util"
 )
 
+func FetchUser(userID string) (*dto.UserResponseDto, error) {
+	db := util.GetDb()
+
+  var user dto.UserResponseDto
+
+	db.Model(&model.User{}).
+		Select("users.id user_id, users.name as user_name, count(*) as total_books, sum(books.page_count) as total_pages").
+		Joins("inner join read_histories on read_histories.user_id = users.id").
+		Joins("inner join books on books.id = read_histories.book_id").
+    Group("users.id").
+    Where("users.id = ?", userID).
+    First(&user)
+
+	return &user, nil
+}
+
 func AllUsers() (*[]dto.UserResponseDto, error) {
 	db := util.GetDb()
 
